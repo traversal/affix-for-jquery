@@ -1,5 +1,5 @@
 /*!
-	jQuery fix plugin v1.0 for jQuery 1.3
+	jQuery affix plugin v1.0 for jQuery 1.3
 	2009 Travis Hensgen (Traversal): http://tinyurl.com/avkw78
 	License: MIT - http://tinyurl.com/ctnp4f
 */
@@ -29,7 +29,7 @@ offsets
 	$.fn.first = function() { if (this.length > 0) return this[0]; };
 
 	
-	$.fixPosition = function(from, to, options)
+	$.affixPosition = function(from, to, options)
 	{
 		// "from" is an element ID, or a wrapped set. In any case, only the first matching element is regarded
 		
@@ -37,7 +37,7 @@ offsets
 		var f = $(from).first();
  
 		// apply callee options to defaults
-		settings = $.fixPosition.getSettings(options);
+		settings = $.affixPosition.getSettings(options);
 
 		// calculate "from" element size, and window size and offsets
 		ws = { width: $(window).width(), height: $(window).height() };
@@ -143,7 +143,7 @@ offsets
 	};
 	
 	
-	$.fixPosition.getSettings = function(options)
+	$.affixPosition.getSettings = function(options)
 	{
 		return $.extend({
 
@@ -172,18 +172,18 @@ offsets
 		}, options || {});
 	};
 	
-	$.fn.animateFix = $.fn.afix = function(to, options) {
-		return this.fix(to, $.extend(options, { animate: true } ));
+	$.fn.affixAnimate = $.fn.affixa = function(to, options) {
+		return this.affix(to, $.extend(options, { animate: true } ));
 	};
 	
-	$.fn.fix = function(to, options) {
+	$.fn.affix = function(to, options) {
 	
 		$.each(
 			this,
 			function(index, from){
 				// need to derive here for EACH element (differs from MooTools version, for jquery chaining)
 				
-				var info = $.fixPosition(from, to, options || {});
+				var info = $.affixPosition(from, to, options || {});
 				
 				if (settings.animate)
 				{
@@ -213,7 +213,7 @@ offsets
 			var offsets = applyOffsets(pos, glue);
 			var insetOffsets = applyInset(pos, glue);
 			
-			// now apply the correct class name based on the from "glue" (the glue is implied in the fixTo "to" string)
+			// now apply the correct class name based on the from "glue" (the glue is implied in the affix "to" string)
 			if (settings.classGlueFromApply)
 				applyClassName(from, glue.from, settings.classGlueFromPrefix);
 
