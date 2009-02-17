@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Demos: jquery.traversal.fix</title>
+	
+	<link rel="stylesheet" href="../test/css/site.css" type="text/css" media="screen" title="" charset="utf-8" />
+
+	<script type="text/javascript" src="../test/js/jquery.js"></script>
+	<script type="text/javascript" src="../test/js/jquery.pause.js"></script>
+	<script type="text/javascript" src="../test/js/jquery.hover_intent.js"></script>
+	<script type="text/javascript" src="../test/js/jquery.easing.js"></script>
+	<script type="text/javascript" src="../src/jquery.traversal.fix.js"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+		
+		(function($) {
+			
+			$(function(){
+				
+				$('#tt_01').hide();
+				
+				$('#tt_trigger').hoverIntent({
+					sensitivity: 3, 
+					interval: 200, 
+					timeout: 500,
+					over: function() {
+						$('#tt_01').clearQueue().fadeIn().fix(this, {to:"ne", inset: [ 32, 8 ] });
+					},
+					
+  			     	out: function() {
+						$('#tt_01').clearQueue().fadeOut();
+					}
+				});
+				
+				$('#tt_01').hover( function(e) {
+						window.clearTimeout($('#tt_trigger')[0].hoverIntent_t);
+					},
+					function() {
+						$(this).clearQueue().fadeOut();
+					}
+				);
+			});
+			
+		})(jQuery);
+	
+		
+	</script>
+</head>
+<body id="demo_fix">
+
+<div id="tt_01" class="tt">
+<div class="tt_head"><div></div></div>
+<div class="tt_body">
+<div class="tt_body_inner">
+
+	This is some tooltip text	
+	
+</div>
+</div>
+<div class="tt_foot"><div></div></div>
+</div>
+<!-- /.tt -->
+
+<div id="content">
+
+<div id="header">
+
+	<h1 class="ir">Traversal - JavaScript Plugins</h1>
+	<h2>Demos: jquery.traversal.fix</h2>
+
+	<div class="clearer"></div>
+</div>
+<!-- /#header -->
+
+<div class="copy">
+	<p>
+	Demos of practical applications for the fix plug-in.
+	</p>
+</div>
+<!-- /.copy -->
+
+<div class="divider"></div>
+
+<h3>Tool tips</h3>
+
+<a id="tt_trigger" href="#">Hover over this link</a>
+</div>
+<!-- /#content -->
+
+
+</body>
+</html>

@@ -1,0 +1,482 @@
+@import url(reset.css);
+
+
+/*
+    Copy (Text) Styles
+*/
+
+.copy strong
+{
+    font-weight: bold;
+}
+
+.copy em
+{
+    font-style: italic;
+}
+        
+.copy p
+{
+    font-size: 12px;
+}
+
+.copy h1
+{
+	font-size: 1.8em;
+	margin-bottom: 0.5em;
+}
+
+.copy h2
+{
+	font-size: 1.2em;
+	margin-bottom: 0.5em;
+}
+
+
+.copy h3
+{
+    
+}
+
+.copy ul
+{
+	padding-left: 20px;
+	list-style-type: disc;
+	margin-bottom: 1em;
+}
+
+.copy ul li
+{
+	margin: 8px 0;
+}
+
+.copy table
+{
+    
+}
+
+.copy table td,
+.copy table th
+{
+    
+}
+
+
+body
+{
+	font-family: "trebuchet ms", arial, sans-serif;
+	font-size: 12px;
+	margin: 20px;
+}
+
+h1,h2,h3
+{
+	font-weight: bold;
+}
+
+h2
+{
+	font-size: 19px;
+}
+
+h2
+{
+	font-size: 16px;
+	font-family: "Consolas", monospace;
+}
+
+h3
+{
+	font-size: 13px;
+}
+
+p
+{
+	margin: 1em 0;
+}
+
+
+button::-moz-focus-inner,
+button span::-moz-focus-inner,
+button.bg::-moz-focus-inner,
+button.bg span::-moz-focus-inner
+{ 
+	/* 
+		This fixes the 1px offset problem in firefox. Found in a comment by "Axonian" at:
+		http://www.filamentgroup.com/lab/styling_the_button_element_with_sliding_doors/
+	*/
+	border: none;
+	/* 
+		... and this one solves the 3 pixel padding problem. Found in a comment by "pike" at:
+		http://radaschuetz.com/archive/2007/04/21/button-hell/
+	*/
+	padding-right: 0;
+}
+
+
+
+/*
+    General Classes
+*/
+
+.clearer
+{
+	display: block;
+    font-size: 0;
+    clear: both;
+	float: none !important;
+    line-height: 0;
+    height: 0;
+	padding: 0 !important;
+}
+
+.padder
+{
+    font-size: 10px;
+    clear: both;
+	float: none !important;
+    line-height: 1em;
+    height: 1em;
+}
+
+.half_padder
+{
+    font-size: 5px;
+    clear: both;
+	float: none !important;
+    line-height: 5px;
+    height: 5px;
+}
+
+.ir
+{
+	/* Phark Image Replacement */
+    text-indent: -999em;
+    background-repeat: no-repeat;
+	display: block;
+
+	background: red;
+	opacity: 0.2;
+
+	background: none;
+	opacity: 1.0;
+}
+
+.ac
+{
+	/* Hidden Elements - used for accessibility only */
+	width: 0;
+	height: 0;
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
+}
+
+.divider
+{
+	display: block;
+    clear: both;
+    font-size: 0 !important;
+	float: none !important;
+    line-height: 0px !important;
+    height: 18px !important;
+	padding: 0 !important;
+	background: url(../images/bg_divider.gif) repeat-x center left;
+}
+
+
+#header
+{
+	margin-bottom: 10px;
+}
+
+#header h1
+{
+	background-image: url(../images/bg_header_h1.png);
+	width: 212px;
+	height: 67px;
+	margin-bottom: 20px;
+}
+
+.tt {
+	position: absolute;
+}
+
+.tt_head,
+.tt_head div {
+	height: 15px;
+	line-height: 0;
+	font-size: 0;
+}
+
+.tt_foot,
+.tt_foot div {
+	height: 27px;
+	line-height: 0;
+	font-size: 0;
+}
+
+.tt_head,
+.tt_foot {
+	padding-right: 77px;
+	background-repeat: no-repeat;
+	background-position: top right;
+}
+
+.tt_head div,
+.tt_foot div {
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+
+.tt_head {
+	background-image: url(../images/bg_tt_head_edge.png);
+}
+
+.tt_head div {
+	background-image: url(../images/bg_tt_head.png);
+}
+
+.tt_foot {
+	background-image: url(../images/bg_tt_foot_edge.png);
+}
+
+.tt_foot div {
+	background-image: url(../images/bg_tt_foot.png);
+}
+
+
+.tt_body {
+	padding-right: 16px;
+	background: url(../images/bg_tt_body_edge.png) top right repeat-y;
+}
+
+.tt_body_inner {
+	padding-left: 18px;
+	padding-right: 2px;
+	color: #FFF;
+	background: url(../images/bg_tt_body.png) top left repeat-y;
+}
+
+
+
+
+body#functional_reveal div.trigger
+{
+	background: #ccc;
+	border: 1px solid #999;
+	text-align: left;
+	padding: 5px 10px;
+	line-height: 1.5em;
+	cursor: default;
+}
+
+body#functional_reveal div.trigger_revealed
+{
+	border-color: #666;
+}
+
+body#functional_reveal div.trigger_click
+{
+	cursor: pointer;
+}
+
+body#functional_reveal ul.trigger_layout li
+{
+	padding: 10px 20px 0 0;
+	float: left;
+}	
+
+body#functional_reveal #target
+{
+	position: absolute;
+	display: none;
+	width: 180px;
+	height: 80px;
+	background: url(../images/bg_target.png);
+	padding: 10px;
+	color: #FFF;
+	
+	top: 10px;
+	left: 10px;
+}
+
+body#functional_tooltip #target
+{
+	display: block;
+	position: absolute;
+	
+}
+
+
+body#functional_fix #content
+{
+	width: 800px;
+}
+
+body#functional_fix .from_element
+{
+	top: 0;
+	left: 0;
+	position: absolute;
+	display: block;
+	border: 1px solid #000;
+	z-index: 50;
+	opacity: 0.9;
+	width: 80px;
+	height: 80px;
+	background: url(../images/bg_from_element.png);	
+}
+
+body#functional_fix #canvas
+{
+	position: relative;
+	height: 400px;
+	width: 600px;
+	background: #333;
+}
+
+body#functional_fix #to_element
+{
+	border: 1px solid #000;
+	position: absolute;
+	top: 100px;
+	left: 200px;
+	width: 200px;
+	height: 200px;
+	background: url(../images/bg_to_element.png);
+}
+
+body#functional_fix #to_element div
+{
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	position: absolute;
+}
+
+body#functional_fix #to_element #ten
+{
+	left: 80px;
+	top: 0;
+}
+
+body#functional_fix #to_element #tene
+{
+	right: 0px;
+	top: 0;
+}
+
+body#functional_fix #to_element #tee
+{
+	right: 0px;
+	top: 80px;
+}
+
+body#functional_fix #to_element #tese
+{
+	right: 0px;
+	bottom: 0px;
+}
+
+body#functional_fix #to_element #tes
+{
+	left: 80px;
+	bottom: 0;
+}
+
+body#functional_fix #to_element #tesw
+{
+	left: 0px;
+	bottom: 0px;
+}
+
+body#functional_fix #to_element #tew
+{
+	left: 0px;
+	top: 80px;
+}
+
+body#functional_fix #to_element #tenw
+{
+	left: 0px;
+	top: 0px;
+}
+
+body#functional_fix #to_element #tec
+{
+	left: 80px;
+	top: 80px;
+}
+
+
+body#functional_fix #from_element div
+{
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	position: absolute;
+}
+
+
+body#functional_fix #from_element #fen
+{
+	left: 30px;
+	top: 0;
+}
+
+body#functional_fix #from_element #fene
+{
+	right: 0px;
+	top: 0;
+}
+
+body#functional_fix #from_element #fee
+{
+	right: 0px;
+	top: 30px;
+}
+
+body#functional_fix #from_element #fese
+{
+	right: 0px;
+	bottom: 0px;
+}
+
+body#functional_fix #from_element #fes
+{
+	left: 30px;
+	bottom: 0;
+}
+
+body#functional_fix #from_element #fesw
+{
+	left: 0px;
+	bottom: 0px;
+}
+
+body#functional_fix #from_element #few
+{
+	left: 0px;
+	top: 30px;
+}
+
+body#functional_fix #from_element #fenw
+{
+	left: 0px;
+	top: 0px;
+}
+
+body#functional_fix #from_element #fec
+{
+	left: 30px;
+	top: 30px;
+}
+
+body#functional_fix form
+{
+	border: 1px solid #ccc;
+	padding: 20px;
+	background: #eee;
+}
+

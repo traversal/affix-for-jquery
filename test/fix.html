@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Test: jquery.traversal.fix</title>
+	
+	<link rel="stylesheet" href="css/site.css" type="text/css" media="screen" title="" charset="utf-8" />
+
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/jquery.pause.js"></script>
+	<script type="text/javascript" src="js/jquery.easing.js"></script>
+	<script type="text/javascript" src="../src/jquery.traversal.fix.js"></script>
+	
+	<script type="text/javascript">
+		
+		$.fn.asNotify = function(length) { $(this).show().fix('o.vne+10').afix('w.ne+10').pause(length || 2000).fadeOut()  };
+
+		
+		(function($){
+			
+			function iupdate()
+			{
+				update(true);
+			}
+			
+			function update(instant)
+			{
+				var offsets = { 
+					"*" : [$('#offset_x').val(), $('#offset_y').val()]
+				};
+
+				var inset = [parseInt($('#inset_x').val()), parseInt($('#inset_y').val())];
+				
+				
+				offsets[$('#offsets_for').val()] = [$('#offset_x_val').val(), $('#offset_y_val').val()]; 
+
+				var fixTo = $('#fix_to').val();
+
+				$('#wrap_glue_from').show();
+
+				$('#wrap_os_glue_to').hide();
+				$('#wrap_glue_to').show();
+
+				if (fixTo == "window" || fixTo == "offscreen")
+				{
+					if (fixTo == "offscreen")
+					{
+						$('#wrap_os_glue_to').show();
+						$('#wrap_glue_to').hide();
+					}
+					
+					$('#wrap_glue_from').hide();
+					
+					var to = fixTo == "offscreen" ? $('#os_glue_to').val() : $('#glue_to').val();
+					
+					if (to == "")
+						to = "ne";
+					
+					$('#from_element').show().fix(
+						fixTo,
+						{
+						 	to: to,
+							animate: instant !== true,
+							offsets: offsets,
+							inset: inset
+						}
+					);
+				}
+				else
+				{
+					$('#wrap_glue_to').show();
+					
+					$('#from_element').show().fix(
+						$('#to_element'), {
+							glue: { from: $('#glue_from').val(), to: $('#glue_to').val() },
+							glueInsideWindow: $('#glue_inside_window')[0].checked, 
+							animate: instant !== true,
+							offsets: offsets,
+							inset: inset
+						}
+					);
+				}
+			}
+			
+			$(function(){
+				
+				$('#fix_to').change(update);
+
+				$('#glue_from').change(update);
+				$('#os_glue_to').change(function() { $('#glue_to').val($(this).val()); update(); } );
+				$('#glue_to').change(function() { $('#os_glue_to').val($(this).val()); update(); } );
+
+				$('#inset_x').change(function() { $('#inset_y').val($('#inset_x').val()); update(); });
+				$('#inset_y').change(update);
+				
+				$('#offset_x').change(update);
+				$('#offset_y').change(update);
+				$('#offsets_for').change(update);
+				$('#offset_x_val').change(update);
+				$('#offset_y_val').change(update);
+				$('#glue_inside_window').change(update);
+
+				$(window).resize(iupdate);
+				$(window).scroll(iupdate);
+				
+				$("#ten" ).click(function() { $('#fix_to').val("element"); $('#glue_to').val("n"); update(); });
+				$("#tene").click(function() { $('#fix_to').val("element"); $('#glue_to').val("ne"); update(); });
+				$("#tee" ).click(function() { $('#fix_to').val("element"); $('#glue_to').val("e"); update(); });
+				$("#tese").click(function() { $('#fix_to').val("element"); $('#glue_to').val("se"); update(); });
+				$("#tes" ).click(function() { $('#fix_to').val("element"); $('#glue_to').val("s"); update(); });
+				$("#tesw").click(function() { $('#fix_to').val("element"); $('#glue_to').val("sw"); update(); });
+				$("#tew" ).click(function() { $('#fix_to').val("element"); $('#glue_to').val("w"); update(); });
+				$("#tenw").click(function() { $('#fix_to').val("element"); $('#glue_to').val("nw"); update(); });
+				$("#tec").click(function() { $('#fix_to').val("element"); $('#glue_to').val("c"); update(); });
+
+				$("#fen" ).click(function() {  $('#glue_from').val("n"); update(); });
+				$("#fene").click(function() {  $('#glue_from').val("ne"); update(); });
+				$("#fee" ).click(function() {  $('#glue_from').val("e"); update(); });
+				$("#fese").click(function() {  $('#glue_from').val("se"); update(); });
+				$("#fes" ).click(function() {  $('#glue_from').val("s"); update(); });
+				$("#fesw").click(function() {  $('#glue_from').val("sw"); update(); });
+				$("#few" ).click(function() {  $('#glue_from').val("w"); update(); });
+				$("#fenw").click(function() {  $('#glue_from').val("nw"); update(); });
+				$("#fec").click( function() {  $('#glue_from').val("c"); update(); });
+				
+				update();
+
+			});
+			
+		})(jQuery);
+		
+	</script>
+	
+</head>
+
+<body id="functional_fix">
+
+	<div id="from_element" class="from_element">
+		<div id="fen" title="glue from north"></div>
+		<div id="fene" title="glue from north-east"></div>
+		<div id="fee"  title="glue from east"></div>
+		<div id="fese" title="glue from south-east"></div>
+		<div id="fes"  title="glue from south"></div>
+		<div id="fesw" title="glue from south-west"></div>
+		<div id="few"  title="glue from west"></div>
+		<div id="fenw" title="glue from north-west"></div>
+		<div id="fec"  title="glue from center"></div>
+	</div>
+	
+
+<div id="content">
+
+<div id="header">
+
+	<h1 class="ir">Traversal - JavaScript Plugins</h1>
+	<h2>Test: jquery.traversal.fix</h2>
+
+	<div class="clearer"></div>
+</div>
+<!-- /#header -->
+
+<div class="copy">
+	<p>
+	The fix plug-in allows an element to be fixed in compass co-ordinate positions to either:
+</p>
+	<ul><li>another element</li><li>the window</li><li>offscreen</li></ul>
+
+	
+</div>
+<!-- /.copy -->
+
+
+<div class="divider"></div>
+<p>
+Select parameters to test below. Note: glue on elements can also be set by clicking the compass direction on the elements themselves. 
+</p>
+
+<form method="post" action="">
+
+	<label for="fix_to">Hook To: </label>
+	<select id="fix_to">
+		<option>element</option>
+		<option>window</option>
+		<option>offscreen</option>
+	</select>
+	
+	<div class="padder"></div>
+	
+	<label>Glue:</label>
+	
+	<span id="wrap_glue_to">
+	<label for="glue_to">&nbsp;&nbsp;&nbsp;To:</label>
+	<select id="glue_to">
+		<option value="">(default)</option>
+		<option>n</option>
+		<option selected="selected">ne</option>
+		<option>e</option>
+		<option>se</option>
+		<option>s</option>
+		<option>sw</option>
+		<option>w</option>
+		<option>nw</option>
+		<option>c</option>
+	</select>
+	</span>
+	
+	<span id="wrap_glue_from">
+	<label for="glue_from">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From</label>
+	<select id="glue_from">
+		<option value="">(default)</option>
+		<option>n</option>
+		<option>ne</option>
+		<option>e</option>
+		<option>se</option>
+		<option>s</option>
+		<option>sw</option>
+		<option>w</option>
+		<option>nw</option>
+		<option>c</option>
+	</select>
+	</span>
+
+	<span id="wrap_os_glue_to">
+	<label for="os_glue_to">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To</label>
+	<select id="os_glue_to">
+		<option>n</option>
+		<option value="nne">nne (vne)</option>
+		<option>ne</option>
+		<option value="ene">ene (hne)</option>
+		<option>e</option>
+		<option value="ese">ese (hse)</option>
+		<option>se</option>
+		<option value="sse">sse (vse)</option>
+		<option>s</option>
+		<option value="ssw">ssw (vsw)</option>
+		<option>sw</option>
+		<option value="wsw">wsw (hsw)</option>
+		<option>w</option>
+		<option value="wnw">wnw (hnw)</option>
+		<option>nw</option>
+		<option value="nnw">nnw (vnw)</option>
+		<option>c</option>
+	</select>
+	</span>
+	
+
+	
+
+	<br />
+	<br />
+
+	<label for="inset_x">Inset: X</label>
+	<input id="inset_x" name="inset_x" type="text" maxlength="3" size="3" value="0" />
+
+	<label for="inset_y">&nbsp;&nbsp;&nbsp;Y</label>
+	<input id="inset_y" name="inset_y" type="text" maxlength="3" size="3" value="0" />
+
+	<br />
+	<br />
+	
+	<label for="offset_x">Offsets: X</label>
+	<input id="offset_x" name="offset_x" type="text" maxlength="3" size="3" value="0" />
+
+	<label for="offset_y">&nbsp;&nbsp;&nbsp;Y</label>
+	<input id="offset_y" name="offset_y" type="text" maxlength="3" size="3" value="0" />
+
+	<br /><br />
+	
+	<label for="offsets_for">Offsets For: </label>
+	<select id="offsets_for" name="offsets_for">
+	<option>n</option>
+	<option>ne</option>
+	<option>e</option>
+	<option>se</option>
+	<option>s</option>
+	<option>sw</option>
+	<option>w</option>
+	<option>nw</option>
+	<option>c</option>
+
+	<option>n_n</option>
+	<option>n_ne</option>
+	<option>n_e</option>
+	<option>n_se</option>
+	<option>n_s</option>
+	<option>n_sw</option>
+	<option>n_w</option>
+	<option>n_nw</option>
+	<option>n_c</option>
+	
+	<option>ne_n</option>
+	<option>ne_ne</option>
+	<option>ne_e</option>
+	<option>ne_se</option>
+	<option>ne_s</option>
+	<option>ne_sw</option>
+	<option>ne_w</option>
+	<option>ne_nw</option>
+	<option>ne_c</option>
+	
+	<option>e_n</option>
+	<option>e_ne</option>
+	<option>e_e</option>
+	<option>e_se</option>
+	<option>e_s</option>
+	<option>e_sw</option>
+	<option>e_w</option>
+	<option>e_nw</option>
+	<option>e_c</option>
+	
+	<option>se_n</option>
+	<option>se_ne</option>
+	<option>se_e</option>
+	<option>se_se</option>
+	<option>se_s</option>
+	<option>se_sw</option>
+	<option>se_w</option>
+	<option>se_nw</option>
+	<option>se_c</option>
+	
+	<option>s_n</option>
+	<option>s_ne</option>
+	<option>s_e</option>
+	<option>s_se</option>
+	<option>s_s</option>
+	<option>s_sw</option>
+	<option>s_w</option>
+	<option>s_nw</option>
+	<option>s_c</option>
+	
+	<option>sw_n</option>
+	<option>sw_ne</option>
+	<option>sw_e</option>
+	<option>sw_se</option>
+	<option>sw_s</option>
+	<option>sw_sw</option>
+	<option>sw_w</option>
+	<option>sw_nw</option>
+	<option>sw_c</option>
+	
+	<option>w_n</option>
+	<option>w_ne</option>
+	<option>w_e</option>
+	<option>w_se</option>
+	<option>w_s</option>
+	<option>w_sw</option>
+	<option>w_w</option>
+	<option>w_nw</option>
+	<option>w_c</option>
+	
+	<option>nw_n</option>
+	<option>nw_ne</option>
+	<option>nw_e</option>
+	<option>nw_se</option>
+	<option>nw_s</option>
+	<option>nw_sw</option>
+	<option>nw_w</option>
+	<option>nw_nw</option>
+	<option>nw_c</option>
+	
+	<option>c_n</option>
+	<option>c_ne</option>
+	<option>c_e</option>
+	<option>c_se</option>
+	<option>c_s</option>
+	<option>c_sw</option>
+	<option>c_w</option>
+	<option>c_nw</option>
+	<option>c_c</option>
+	
+	
+	</select>
+	
+	<label for="offset_x_val">X</label>
+	<input id="offset_x_val" name="offset_x_val" type="text" maxlength="3" size="2" value="0" />
+
+	<label for="offset_y_val">&nbsp;&nbsp;&nbsp;Y</label>
+	<input id="offset_y_val" name="offset_y_val" type="text" maxlength="3" size="2" value="0" />
+
+	<br />
+	<br />
+	
+	<input type="checkbox" name="glue_inside_window" id="glue_inside_window" value="1" />
+	<label for="glue_inside_window">Glue Inside Window (Adjust the glue automatically to keep the target completely visible within the window)</label>
+
+	
+</form>
+
+<br />
+
+<div id="canvas">
+	
+	<div id="to_element">
+		<div id="ten" title="glue to north"></div>
+		<div id="tene" title="glue to north-east"></div>
+		<div id="tee"  title="glue to east"></div>
+		<div id="tese" title="glue to south-east"></div>
+		<div id="tes"  title="glue to south"></div>
+		<div id="tesw" title="glue to south-west"></div>
+		<div id="tew"  title="glue to west"></div>
+		<div id="tenw" title="glue to north-west"></div>
+		<div id="tec"  title="glue to center"></div>
+	</div>
+
+
+</div>
+<!-- /#canvas -->
+
+</div>
+<!-- /#content -->
+
+
+</body>
+</html>
