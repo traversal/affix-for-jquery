@@ -7,6 +7,7 @@ Allows an element to be glued in compass co-ordinate positions to either:
 ### Requirements
 * jQuery v1.3 (untested on versions prior to this)
 
+
 #### MIT LICENSE:
 
 Copyright (c) 2009 Travis Hensgen (Traversal)
