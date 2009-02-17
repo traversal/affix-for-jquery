@@ -325,6 +325,12 @@ offsets
 
 		glueInsideWindow: function(pos, glue)
 		{
+			// record where the element is glued to
+			var gtn = glue.to.search("n") != -1;
+			var gts = glue.to.search("s") != -1;
+			var gte = glue.to.search("e") != -1;
+			var gtw = glue.to.search("w") != -1;
+			
 			// flag if the target will be clipped by any of the window edges
 			// ("cn" stands for "clipped at window's north edge, and so on)
 
@@ -341,14 +347,14 @@ offsets
 
 			if (!cn && !cs && !ce && !cw)
 				return false; // not clipped, so let the calling function know that
-
-			if (cn || cs)
+				
+			if ((cn && gtn) || (cs && gts))
 			{
 				keys[0] = EL.swapNS(keys[0]);
 				keys[1] = EL.swapNS(keys[1]);
 			}
 
-			if (ce || cw)
+			if ((ce && gte) || (cw && gtw))
 			{
 				keys[0] = EL.swapEW(keys[0]);
 				keys[1] = EL.swapEW(keys[1]);

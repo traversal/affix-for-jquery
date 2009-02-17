@@ -57,10 +57,10 @@ INSTALL_DIR = ..$(DS)
 # Final Output Files (For Combined Files)
 
 # SITE_OUTPUT = $(INSTALL_DIR)site.js
-LIB_OUTPUT = $(INSTALL_DIR)jquery.traversal.fix-min.js
+LIB_OUTPUT = $(INSTALL_DIR)jquery.traversal.affix-min.js
 
 LIB_FILES = \
-	jquery.traversal.fix.js
+	jquery.traversal.affix.js
 
 # Separate Library Files compressed as separate files into the directory INSTALL_DIR - name of each file is the same as the original
 # LIB_SEPARATE_FILES = \

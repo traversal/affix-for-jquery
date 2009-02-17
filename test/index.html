@@ -5,18 +5,18 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-	<title>Test: jquery.traversal.fix</title>
+	<title>Test: jquery.traversal.affix</title>
 	
 	<link rel="stylesheet" href="css/site.css" type="text/css" media="screen" title="" charset="utf-8" />
 
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/jquery.pause.js"></script>
 	<script type="text/javascript" src="js/jquery.easing.js"></script>
-	<script type="text/javascript" src="../src/jquery.traversal.fix.js"></script>
+	<script type="text/javascript" src="../src/jquery.traversal.affix.js"></script>
 	
 	<script type="text/javascript">
 		
-		$.fn.asNotify = function(length) { $(this).show().fix('o.vne+10').afix('w.ne+10').pause(length || 2000).fadeOut()  };
+		$.fn.asNotify = function(length) { $(this).show().affix('o.vne+10').afix('w.ne+10').pause(length || 2000).fadeOut()  };
 
 		
 		(function($){
@@ -59,7 +59,7 @@
 					if (to == "")
 						to = "ne";
 					
-					$('#from_element').show().fix(
+					$('#from_element').show().affix(
 						fixTo,
 						{
 						 	to: to,
@@ -73,7 +73,7 @@
 				{
 					$('#wrap_glue_to').show();
 					
-					$('#from_element').show().fix(
+					$('#from_element').show().affix(
 						$('#to_element'), {
 							glue: { from: $('#glue_from').val(), to: $('#glue_to').val() },
 							glueInsideWindow: $('#glue_inside_window')[0].checked, 
@@ -156,7 +156,7 @@
 <div id="header">
 
 	<h1 class="ir">Traversal - JavaScript Plugins</h1>
-	<h2>Test: jquery.traversal.fix</h2>
+	<h2>Test: jquery.traversal.affix</h2>
 
 	<div class="clearer"></div>
 </div>
@@ -164,9 +164,10 @@
 
 <div class="copy">
 	<p>
-	The fix plug-in allows an element to be fixed in compass co-ordinate positions to either:
+	The affix plug-in allows an element to be glued in compass co-ordinate positions to either:
 </p>
-	<ul><li>another element</li><li>the window</li><li>offscreen</li></ul>
+
+<ul><li>another element</li><li>the window</li><li>offscreen</li></ul>
 
 	
 </div>
@@ -180,7 +181,7 @@ Select parameters to test below. Note: glue on elements can also be set by click
 
 <form method="post" action="">
 
-	<label for="fix_to">Hook To: </label>
+	<label for="fix_to">Affix To: </label>
 	<select id="fix_to">
 		<option>element</option>
 		<option>window</option>
