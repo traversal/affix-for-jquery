@@ -21,6 +21,8 @@
 		
 		(function($){
 			
+			var updateTimeout;
+			
 			function iupdate()
 			{
 				update(true);
@@ -28,6 +30,15 @@
 			
 			function update(instant)
 			{
+				if ($('#fixed_mode')[0].checked)
+				{
+					$('#from_element').css({position: "fixed"});
+				}
+				else
+				{
+					$('#from_element').css({position: "absolute"});
+				}
+				
 				var offsets = { 
 					"*" : [$('#offset_x').val(), $('#offset_y').val()]
 				};
@@ -65,7 +76,8 @@
 						 	to: to,
 							animate: instant !== true,
 							offsets: offsets,
-							inset: inset
+							inset: inset,
+							fixed: $('#fixed_mode')[0].checked
 						}
 					);
 				}
@@ -79,7 +91,8 @@
 							glueInsideWindow: $('#glue_inside_window')[0].checked, 
 							animate: instant !== true,
 							offsets: offsets,
-							inset: inset
+							inset: inset,
+							fixed: $('#fixed_mode')[0].checked
 						}
 					);
 				}
@@ -103,8 +116,10 @@
 				$('#offset_y_val').change(update);
 				$('#glue_inside_window').change(update);
 
+				$('#fixed_mode').click(update);
+				
 				$(window).resize(iupdate);
-				$(window).scroll(iupdate);
+				$(window).scroll( function() { if (!($('#fixed_mode')[0].checked)) iupdate() } );
 				
 				$("#ten" ).click(function() { $('#fix_to').val("element"); $('#glue_to').val("n"); update(); });
 				$("#tene").click(function() { $('#fix_to').val("element"); $('#glue_to').val("ne"); update(); });
@@ -187,6 +202,12 @@ Select parameters to test below. Note: glue on elements can also be set by click
 		<option>window</option>
 		<option>offscreen</option>
 	</select>
+
+	<span id="wrap_fixed_mode">
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input id="fixed_mode" type="checkbox" value="1" class="checkbox" />
+		<label for="fixed_mode">Use Fixed Position (will set to element to "position: fixed", and suppress scroll events)</label>
+	</span>
 	
 	<div class="padder"></div>
 	

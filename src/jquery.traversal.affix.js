@@ -149,7 +149,8 @@ offsets
 			glue				: { to: "ne" }, // default case is for the most common form of "tooltip"
 			glueInsideWindow	: true,
 			offsets				: [0,0],
-
+			fixed				: false,
+			
 			// inset [x,y] can be used instead of (or in addition to offsets), which intelligently apply offsets with respect to the glue position. 
 			// positive inset will position INSIDE the boundary of that which we are hooking "to", negative inset will position OUTSIDE 
 			// a single integer value can also be used to apply equal [x,y] inset
@@ -612,11 +613,11 @@ offsets
 			}
 			case "wx":
 			{
-				return wo.left;
+				return settings.fixed ? 0 : wo.left;
 			}
 			case "wy":
 			{
-				return wo.top;
+				return settings.fixed ? 0 : wo.top;
 			}
 			case "fw": {
 				return fs.width;
