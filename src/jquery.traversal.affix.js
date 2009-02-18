@@ -44,16 +44,7 @@ offsets
         wo = { top: $(window).scrollTop(), left: $(window).scrollLeft() };
 		fs = { width: $(from).outerWidth(), height: $(from).outerHeight() };
 
-		// setup glue if callee has used "from", "to" directly in options (a bit more concise)
-		if (settings.from)
-		{
-			settings.glue.from = settings.from;
-		}
-
-		if (settings.to)
-		{
-			settings.glue.to = settings.to;
-		}
+		
 				
 		// work out what "to" actually is - an element, the window, or "offscreen"
 
@@ -136,20 +127,23 @@ offsets
 			}
 		}
 
-		if (options.extendedInfo)
+		if (settings.extendedInfo)
 			return info;
 		else
 			return { left: info.left, top: info.top };
 	};
 	
+	$.fn.affixPosition = function(to, options)
+	{
+		return $.affixPosition($(this), to, options); 
+	};
 	
 	$.affixPosition.getSettings = function(options)
 	{
-		return $.extend({
+		var s = $.extend({
 
 			animate 			: false,
-			animateOptions 		: { duration: 500, queue: true, easing: null, callback: null },
-			
+			animateParams		: null,
 			extendedInfo		: false,
 
 			glue				: { to: "ne" }, // default case is for the most common form of "tooltip"
@@ -170,10 +164,67 @@ offsets
 			classGlueToPrefix	: "glue_"
 
 		}, options || {});
+
+		// setup default animate options (these are not 
+		s.animateOptions = $.extend( { duration: 500, queue: true, easing: null, callback: null }, s.animateOptions || {} );
+		
+		// assume animation is active if animateProperties or animateOptions were provided
+		if (options.animateOptions || options.animateParams)
+			s.animate = true;
+		
+		// setup glue if callee has used "from", "to" directly in options (a bit more concise)
+		if (s.from)
+		{
+			s.glue.from = s.from;
+		}
+
+		if (s.to)
+		{
+			s.glue.to = s.to;
+		}
+		
+		
+		
+		return s;
 	};
 	
 	$.fn.affixAnimate = $.fn.affixa = function(to, options) {
 		return this.affix(to, $.extend(options, { animate: true } ));
+	};
+	
+	$.fn.affixAnimateNQ = $.fn.affixanq = function(to, options) {
+		return this.affix(to, $.extend(options, { animateOptions: {queue: false} } ));
+	};
+	
+	$.fn.affixAnimateFadeIn = $.fn.affixafi = function(to, options, opacity) {
+		var o = options || {};
+		
+		return this
+			.css({opacity: 0.0})
+			.show().affix(
+				to, 
+				$.extend(
+					o, { 
+						animateParams: $.extend(o.animateParams || {}, { opacity: opacity || 1.0 })
+					}
+				)
+			);
+	};
+	
+	$.fn.affixAnimateFadeOut = $.fn.affixafo = function(to, options, opacity) {
+		var o = options || {};
+		
+		return this
+			.css({opacity: opacity || 1.0})
+			.affix(
+				to, 
+				$.extend(
+					o, { 
+						animateParams:  $.extend(o.animateParams || {}, { opacity: "hide" }),
+						animateOptions: $.extend(o.animateOptions || {}, { complete: function() { $(this).hide(); } })
+					}
+				)
+			)
 	};
 	
 	$.fn.affix = function(to, options) {
@@ -184,10 +235,10 @@ offsets
 				// need to derive here for EACH element (differs from MooTools version, for jquery chaining)
 				
 				var info = $.affixPosition(from, to, options || {});
-				
+
 				if (settings.animate)
 				{
-					$(from).animate( { left: info.left, top: info.top }, settings.animateOptions );
+					$(from).animate( $.extend(settings.animateParams || {}, { left: info.left, top: info.top }), settings.animateOptions );
 				}
 				else
 				{
