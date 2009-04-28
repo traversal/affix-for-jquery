@@ -28,7 +28,50 @@ offsets
 	
 	$.fn.first = function() { if (this.length > 0) return this[0]; };
 
-	
+    $.fn.shim = function(pos) {
+        if ($.browser.msie && $.browser.version < 7.0) {
+            var z = $(this).css("z-index");
+            
+            if (z <= 0) {
+                $(this).data("zeroz", true);
+                $(this).css("z-index", 1);
+            }
+            
+            var ifs = $(this).data("ifs");
+            
+            if (!ifs) {
+                //  the iframe shim doesn't exist, so create it and store against the element
+                ifs = $('<iframe frameborder="0" scrolling="no"></iframe>')[0];
+                $(ifs).appendTo("body");
+                $(this).data("ifs", ifs);
+            }
+            
+            var size = {width: $(this).outerWidth(), height: $(this).outerHeight()};
+            
+            $(ifs).css({
+                "opacity"   : 0.1, 
+                "display"   : "block", 
+                "z-index"   : Math.max(z - 1, 0), 
+                "position"  : "absolute", 
+                "width"     : size.width, 
+                "height"    : size.height, 
+                "left"      : pos.left, 
+                "top"       : pos.top 
+            });
+        }
+        
+    };
+    
+    $.fn.unshim = function() {
+        // we won't destroy the iframe, we'll just hide it
+        var ifs = $(this).data("ifs");
+        
+        if (ifs) {
+            $(ifs).hide();
+        }
+    };
+
+
 	$.affixPosition = function(from, to, options)
 	{
 		// "from" is an element ID, or a wrapped set. In any case, only the first matching element is regarded
@@ -162,7 +205,9 @@ offsets
 			classGlueFromPrefix	: "glue_",
 
 			classGlueToApply	: true,
-			classGlueToPrefix	: "glue_"
+			classGlueToPrefix	: "glue_",
+			
+			shim                : true // if in IE 6, apply an iframe shim to the element when it is affixed to prevent any select boxes showing above it
 
 		}, options || {});
 
@@ -236,6 +281,10 @@ offsets
 				// need to derive here for EACH element (differs from MooTools version, for jquery chaining)
 				
 				var info = $.affixPosition(from, to, options || {});
+
+				if (settings.shim) {
+				    $(this).shim( { left: info.left, top: info.top } );
+			    }
 
 				if (settings.animate)
 				{
