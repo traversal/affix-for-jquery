@@ -1,7 +1,7 @@
 /*!
 	jQuery affix plugin v1.0 for jQuery 1.3
-	2009 Travis Hensgen (Traversal): http://tinyurl.com/avkw78
-	License: MIT - http://tinyurl.com/ctnp4f
+	2009 Travis Hensgen (Traversal)
+	License: MIT
 */
 
 /* 
@@ -37,13 +37,13 @@ offsets
                 $(this).css("z-index", 1);
             }
             
-            var ifs = $(this).data("ifs");
+            var ifs = $(this).data("affix-ifs");
             
             if (!ifs) {
                 //  the iframe shim doesn't exist, so create it and store against the element
                 ifs = $('<iframe frameborder="0" scrolling="no"></iframe>')[0];
                 $(ifs).appendTo("body");
-                $(this).data("ifs", ifs);
+                $(this).data("affix-ifs", ifs);
             }
             
             var size = {width: $(this).outerWidth(), height: $(this).outerHeight()};
@@ -68,10 +68,16 @@ offsets
         
         if (ifs) {
             $(ifs).hide();
+            
+            if ($(this).data("zeroz", true)) {
+              $(this).css("z-index", 0);
+            }
+            
         }
+        
+        return $(this);
     };
-
-
+    
 	$.affixPosition = function(from, to, options)
 	{
 		// "from" is an element ID, or a wrapped set. In any case, only the first matching element is regarded
@@ -207,17 +213,21 @@ offsets
 			classGlueToApply	: true,
 			classGlueToPrefix	: "glue_",
 			
-			shim                : true // if in IE 6, apply an iframe shim to the element when it is affixed to prevent any select boxes showing above it
+			shim                : true, // if in IE 6, apply an iframe shim to the element when it is affixed to prevent any select boxes showing above it
+      autoEvents          : { scroll: true, resize: true } // sets up events to "reaffix" the target elements when the window is resized or scrolls
 
 		}, options || {});
 
-		// setup default animate options (these are not 
+		// setup default animate options
 		s.animateOptions = $.extend( { duration: 500, queue: true, easing: null, callback: null }, s.animateOptions || {} );
 		
 		// assume animation is active if animateProperties or animateOptions were provided
 		if (options.animateOptions || options.animateParams)
 			s.animate = true;
 		
+		if (options.reaffixing) 
+		  s.animate = false; // don't allow animation when reaffixing
+		  
 		// setup glue if callee has used "from", "to" directly in options (a bit more concise)
 		if (s.from)
 		{
@@ -270,11 +280,56 @@ offsets
 						animateOptions: $.extend(o.animateOptions || {}, { complete: function() { $(this).hide(); } })
 					}
 				)
-			)
+			);
 	};
 	
+	$.fn.reaffix = function() {
+    $(this).each( function() {
+      
+      if ($(this).data("affix-to")) {
+        // empty options is allowed
+        
+        $(this).affix($(this).data("affix-to"), $.extend($(this).data("affix-options") || {}, { reaffixing: true }));
+      }
+    });
+    
+    return $(this);
+    
+  };
+    
+  $.fn.unaffix = function() {
+    $(this).each( function() {
+      $(this).unshim();
+      $(this).affixReset();
+    });
+    
+    return $(this);
+  };
+
+  $.fn.affixReset = function() {
+    $(this).each( function() {
+
+      if ($(this).data("affix-window-on-resize")) {
+        $(window).unbind("resize", $(this).data("affix-window-on-resize"));
+      	$(this).data("affix-window-on-resize", null);
+      }
+
+      if ($(this).data("affix-window-on-scroll")) {
+        $(window).unbind("resize", $(this).data("affix-window-on-scroll"));
+      	$(this).data("affix-window-on-scroll", null);
+      }
+    
+      $(this).data("affix-to", null);
+      $(this).data("affix-options", null);
+    
+    });
+    
+    return this;
+  };
+  
 	$.fn.affix = function(to, options) {
-	
+	    
+
 		$.each(
 			this,
 			function(index, from){
@@ -282,6 +337,33 @@ offsets
 				
 				var info = $.affixPosition(from, to, options || {});
 
+        // NOTE: settings is now the final set of options after affixPosition is called
+
+        if (options && options.reset) {
+          $(this).affixReset();
+        }
+
+        var el = $(this);
+        
+        $(this).data("affix-to", to);
+      	$(this).data("affix-options", options);
+
+        var fReaffix = function(event) {
+          if (el && el.is(":visible")) { 
+            el.reaffix(); 
+          }
+        };
+        
+        if (settings.autoEvents.resize && !$(this).data("affix-window-on-resize")) {
+      	  $(this).data("affix-window-on-resize", fReaffix);
+          $(window).resize($(this).data("affix-window-on-resize"));
+        }
+
+        if (settings.autoEvents.resize && !$(this).data("affix-window-on-scroll")) {
+      	  $(this).data("affix-window-on-scroll", fReaffix);
+          $(window).scroll($(this).data("affix-window-on-scroll"));
+        }
+                
 				if (settings.shim) {
 				    $(this).shim( { left: info.left, top: info.top } );
 			    }
@@ -381,8 +463,11 @@ offsets
 		derive: function(from, to) {
 
 			// calculate the to element size and position
+      var vis = $(to).css("visibility");
+      $(to).css("visibility", "hidden");
 			tp = $(to).offset();
 			ts = {width: $(to).outerWidth(), height: $(to).outerHeight()};
+      $(to).css("visibility", vis);
 
 			var glue = settings.glue;
 
@@ -625,7 +710,7 @@ offsets
 		return {
 			left: Math.round(parseEquation(parts[0], fnTokenValue || tokenValue)),
 			top	: Math.round(parseEquation(parts[1], fnTokenValue || tokenValue))
-		}
+		};
 	};
 	
 	var applyClassName = function(el, glueVal, classGluePrefix)
